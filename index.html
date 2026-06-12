@@ -2,9 +2,31 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>???</title>
+    <title>◆ 警告 ◆</title>
+    <style>
+        /* 画面全体の装飾 */
+        body {
+            background-color: #000000; /* 背景は漆黒 */
+            color: #00ff00;            /* 文字は生々しい緑（あるいは白や赤もお好みで） */
+            font-family: "MS PMincho", "Hiragino Mincho ProN", serif; /* 謎の明朝体指定 */
+            text-align: center;        /* すべて中央寄せ */
+            padding-top: 15%;          /* 画面の上部に不自然な空白を作る */
+            margin: 0;
+        }
+
+        /* カウンターの数字を目立たせる */
+        .counter-num {
+            font-size: 24pt;
+            color: #ff0000; /* 数字だけは血のような赤 */
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>ようこそ。あなたは〇〇人目の訪問者です。</h1>
+
+    <h1>YOU ARE WATCHING THE TRAP.</h1>
+    
+    <p>ようこそ。あなたは <span class="counter-num">000000</span> 人目の犠牲者です。</p>
+
 </body>
 </html>
