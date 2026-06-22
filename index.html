@@ -27,6 +27,7 @@
     </style>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
 </head>
 <body>
 
@@ -48,6 +49,7 @@
     // Firebaseを初期化
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
+    firebase.analytics(); 
     const counterRef = database.ref('visitor_count');
 
     // 画面の数字を書き換える共通の処理
