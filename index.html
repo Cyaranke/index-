@@ -34,9 +34,7 @@
     
     <p>あなたは <span class="counter-num" id="count">......</span> 人目の来訪者です。</p>
 <script>
-        // --- 1. Firebaseの接続設定 ---
-        // あなたの基地からコピーした「const firebaseConfig = { ... }」の塊を、以下のすぐ下に貼り付けてください
-
+        // --- Firebaseの接続設定 ---
 const firebaseConfig = {
   apiKey: "AIzaSyDq2kVRfXIEC84lbMbVKXyw_I5GhW0fRqM",
   authDomain: "key-ring-9be6a.firebaseapp.com",
@@ -52,22 +50,17 @@ const firebaseConfig = {
         const database = firebase.database();
         const counterRef = database.ref('visitor_count');
 
-        // --- 2. 同一セッションでのリロード対策 ---
-        // ブラウザの「セッションストレージ」を使って、このタブを閉じない限り連打しても増えないようにする
+        // ---  同一セッションでのリロード対策 ---
         if (!sessionStorage.getItem('visited')) {
-            // 初めて開いた場合のみ、金庫の数字をトランザクション（安全な方法）で+1する
             counterRef.transaction((currentCount) => {
                 return (currentCount || 0) + 1;
             });
-            // 「もうカウントしたよ」の印をつける
             sessionStorage.setItem('visited', 'true');
         }
 
-        // --- 3. 画面の数字をリアルタイム更新 ---
-        // 金庫の数字が変化したら、自動的に画面の「......」をその数字に書き換える
+        // --- 画面の数字をリアルタイム更新 ---
         counterRef.on('value', (snapshot) => {
             const count = snapshot.val() || 0;
-            // 古のサイト風に、6桁でゼロ埋め（例: 000005）して表示する
             const zeroPadded = String(count).padStart(6, '0');
             document.getElementById('count').innerText = zeroPadded;
         });
