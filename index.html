@@ -57,7 +57,7 @@ const firebaseConfig = {
         }
 
         // --- 画面の数字をリアルタイム更新 ---
-        counterRef.on('value', (snapshot) => {
+        counterRef.once('value', (snapshot) => {
             const count = snapshot.val() || 0;
             const zeroPadded = String(count).padStart(6, '0');
             document.getElementById('count').innerText = zeroPadded;
