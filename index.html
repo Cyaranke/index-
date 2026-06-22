@@ -52,9 +52,7 @@ const firebaseConfig = {
 
         // ---  同一セッションでのリロード対策 ---
         if (!sessionStorage.getItem('visited')) {
-            counterRef.transaction((currentCount) => {
-                return (currentCount || 0) + 1;
-            });
+            counterRef.set(firebase.database.ServerValue.increment(1));
             sessionStorage.setItem('visited', 'true');
         }
 
