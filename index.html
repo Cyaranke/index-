@@ -50,27 +50,36 @@
     const database = firebase.database();
     const counterRef = database.ref('visitor_count');
 
-    // 共通処理：サーバーから今の数字を1回だけ読み込んで画面にだす関数
-    function displayCurrentCount() {
-        counterRef.once('value', (snapshot) => {
-            const count = snapshot.val() || 0;
-            const zeroPadded = String(count).padStart(6, '0');
-            document.getElementById('count').innerText = zeroPadded;
-        });
+    // 画面の数字を書き換える共通の処理
+    function updateDisplay(count) {
+        const zeroPadded = String(count).padStart(6, '0');
+        document.getElementById('count').innerText = zeroPadded;
     }
 
-    // ---  同一セッションでのリロード対策 ---
-    if (!sessionStorage.getItem('visited')) {
+    // --- 同一セッションでのリロード対策 ---
+    // ブラウザのメモ帳から「自分の番号」を取り出す
+    const myNumber = sessionStorage.getItem('my_visitor_number');
+
+    if (!myNumber) {
+        // 【初回訪問の場合】
         // 1. サーバー側でカウントを＋1する
         counterRef.set(firebase.database.ServerValue.increment(1))
             .then(() => {
-                // 2. サーバーでの＋1が「完全に完了」した後に、本物の数字を読みに行く
-                displayCurrentCount();
+                // 2. ＋1が完了した後に、サーバーから本物の数字を1回だけ読み込む
+                counterRef.once('value', (snapshot) => {
+                    const count = snapshot.val() || 0;
+                    
+                    // 3. ゲットした自分の番号をブラウザのメモ帳に「保存」する
+                    sessionStorage.setItem('my_visitor_number', count);
+                    
+                    // 4. 画面に表示
+                    updateDisplay(count);
+                });
             });
-        sessionStorage.setItem('visited', 'true');
     } else {
-        // すでに訪問済みの場合は、カウントアップせずに今の数字をそのまま出す
-        displayCurrentCount();
+        // 【2回目以降（リロードなど）の場合】
+        // サーバーには一切見に行かず、メモ帳に書いてある自分の番号をそのまま出す
+        updateDisplay(myNumber);
     }
 </script>
 </body>
